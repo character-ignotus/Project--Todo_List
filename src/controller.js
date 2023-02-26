@@ -21,9 +21,18 @@ function createTodos(title, description, date, priorityChecker, isChecked, selec
     })
 };
 
+function delProject(projectName) {
+    if (projectName === 'Default') return;
+
+    projects.filter((project, index) => {
+        if (project.projectName === projectName) {
+            projects.splice(index, 1);
+        }
+    })
+};
+
 function loger() {
     console.log(projects);
 }
 
-export {createProject, createTodos, loger};
-
+export {createProject, createTodos, delProject, loger};
