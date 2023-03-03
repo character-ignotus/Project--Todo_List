@@ -31,8 +31,19 @@ function delProject(projectName) {
     })
 };
 
+function delTodo(todoTitle) {
+    for (let i=0; i < projects.length; i++) {
+        for (let j=0; j < projects[i].todos.length; j++) {
+            if (projects[i].todos[j].title === todoTitle) {
+                projects[i].todos.splice(j, 1);
+                break;
+            }
+        }
+    }
+}
+
 function loger() {
     console.log(projects);
 }
 
-export {createProject, createTodos, delProject, loger};
+export {createProject, createTodos, delProject, delTodo, loger};
