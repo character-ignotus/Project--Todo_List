@@ -18,9 +18,27 @@ function closeTodosModal() {
     todosModal.close();
 };
 
+// Additional Functionality
+function addToProjectsList(projectName) {
+    const projectOption = document.createElement('option');
+    projectOption.setAttribute(`id`, `${projectName}`)
+    projectOption.textContent = `${projectName}`;
+    projectOption.value = `${projectName}`;
+    document.getElementById('project-folders').appendChild(projectOption);
+}
+
+function removeFromProjectsList(e) {
+    let projectOption = document.getElementById(`${e.target.previousElementSibling.textContent}`);
+    document.getElementById('project-folders').removeChild(projectOption);
+}
+// Additional Functionality
+
 function removeFromProjectView(e) {
+    removeFromProjectsList(e);
+
     delProject(e.target.previousElementSibling.textContent);
     document.querySelector('#projects').removeChild(e.target.parentElement);
+
     loger();
 };
 
@@ -40,6 +58,8 @@ function createProjectElement(project) {
 
     projectCard.appendChild(projecOpentBtn);
     projectCard.appendChild(projecCloseBtn);
+
+    addToProjectsList(project.projectName)
 
     return projectCard;
 };
