@@ -9,6 +9,20 @@
 <body>
     <div id="projects">
         <button id="add-project">ADD PROJECT</button>
+
+        <dialog class="modal">
+            <form action="get" method="dialog">
+              <button type="button" class="close-project-modal">X</button>
+              <div class="inputs">
+                  <div>
+                      <label for="project-name">Project Name</label>
+                      <input type="text" name="title" id="project-name" required>
+                  </div>
+              </div>
+              <button type="submit" class="submit-project">Add Book</button>
+            </form>
+        </dialog>
+
         <div class="project">DEFAULT</div>
     </div>
     <div id="todos">
