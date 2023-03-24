@@ -10,6 +10,12 @@ function closeProjectsModal() {
         modal.close();
 };
 
+function removeFromProjectView(e) {
+    delProject(e.target.previousElementSibling.textContent);
+    document.querySelector('#projects').removeChild(e.target.parentElement);
+    loger();
+}
+
 function createProjectElement(project) {
     const projectCard = document.createElement('div');
     const projecOpentBtn = document.createElement('button');
@@ -17,6 +23,10 @@ function createProjectElement(project) {
 
     projecOpentBtn.textContent = `${project.projectName}`;
     projecCloseBtn.textContent = `X`;
+
+    projecCloseBtn.addEventListener('click', (e) => {
+        removeFromProjectView(e);
+    });
 
     projectCard.classList.add('project');
 
@@ -33,7 +43,7 @@ function populateProjectsView() {
     return createProjectElement(projects[projects.length - 1]);
 }
 
-export {openProjectsModal, closeProjectsModal, populateProjectsView};
+export {openProjectsModal, closeProjectsModal, populateProjectsView, removeFromProjectView};
 
 
 
