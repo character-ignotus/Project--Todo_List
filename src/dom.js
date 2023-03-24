@@ -1,20 +1,28 @@
 import { createProject, createTodos, delProject, delTodo, loger, getProjects } from "./controller";
-
-const modal = document.querySelector('.modal');
+const projectModal = document.querySelector('.project-modal');
+const todosModal = document.querySelector('.todos-modal');
 
 function openProjectsModal() {
-        modal.showModal();
+    projectModal.showModal();
 };
 
 function closeProjectsModal() {
-        modal.close();
+    projectModal.close();
+};
+
+function openTodosModal() {
+    todosModal.showModal();
+};
+
+function closeTodosModal() {
+    todosModal.close();
 };
 
 function removeFromProjectView(e) {
     delProject(e.target.previousElementSibling.textContent);
     document.querySelector('#projects').removeChild(e.target.parentElement);
     loger();
-}
+};
 
 function createProjectElement(project) {
     const projectCard = document.createElement('div');
@@ -34,16 +42,16 @@ function createProjectElement(project) {
     projectCard.appendChild(projecCloseBtn);
 
     return projectCard;
-}
+};
 
 function populateProjectsView() {
     let projectName = document.querySelector('#project-name').value;
     createProject(projectName);
     const projects = getProjects();
     return createProjectElement(projects[projects.length - 1]);
-}
+};
 
-export {openProjectsModal, closeProjectsModal, populateProjectsView, removeFromProjectView};
+export {openProjectsModal, closeProjectsModal, openTodosModal, closeTodosModal, populateProjectsView, removeFromProjectView};
 
 
 
