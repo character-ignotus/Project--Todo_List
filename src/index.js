@@ -1,6 +1,6 @@
 import './styles/style.css'
 import { createProject, createTodos, delProject, delTodo, loger } from "./controller";
-import { openProjectsModal, closeProjectsModal, openTodosModal, closeTodosModal, populateProjectsView } from "./dom"
+import { openProjectsModal, closeProjectsModal, openTodosModal, closeTodosModal, populateProjectsView, populateTodosView } from "./dom"
 
 document.querySelector('#add-project').addEventListener('click', openProjectsModal);
 document.querySelector('.close-project-modal').addEventListener('click', closeProjectsModal);
@@ -10,6 +10,11 @@ document.querySelector('.close-todos-modal').addEventListener('click', closeTodo
 
 document.querySelector('.submit-project').addEventListener('click', () => {
     document.querySelector('#projects').appendChild(populateProjectsView());
+    window.loger();
+});
+
+document.querySelector('.submit-todo').addEventListener('click', () => {
+    document.querySelector('#todos').appendChild(populateTodosView());
     window.loger();
 });
 

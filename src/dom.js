@@ -71,7 +71,52 @@ function populateProjectsView() {
     return createProjectElement(projects[projects.length - 1]);
 };
 
-export {openProjectsModal, closeProjectsModal, openTodosModal, closeTodosModal, populateProjectsView, removeFromProjectView};
+function createTodoElement(title, description, date, priority, status) {
+    const todo = document.createElement('div');
+    const todoTitle = document.createElement('div')
+    const todoDescription = document.createElement('div');
+    const todoDate = document.createElement('div');
+    const todoPriority = document.createElement('div');
+    const todoStatus = document.createElement('div');
+
+    todoTitle.textContent = `${title}`;
+    todoDescription.textContent = `${description}`;
+    todoDate.textContent = `${date}`;
+    todoPriority.textContent = `${priority}`;
+    todoStatus.textContent = `${status}`;
+
+    todo.classList.add('todo');
+
+    todo.appendChild(todoTitle);
+    todo.appendChild(todoDescription);
+    todo.appendChild(todoDate);
+    todo.appendChild(todoPriority);
+    todo.appendChild(todoStatus);
+
+    return todo;
+}
+
+function populateTodosView() {
+    let todoTitle = document.querySelector('#todo-title').value;
+    let description = document.querySelector('#description').value;
+    let date = document.querySelector('#date').value;
+    let priority = document.querySelector('#priority').value;
+    let status = document.querySelector('#status').value;
+    let projectFolder = document.querySelector('#project-folders').value;
+
+    console.log(todoTitle);
+    console.log(description);
+    console.log(date);
+    console.log(priority);
+    console.log(status);
+    console.log(projectFolder);
+
+    createTodos(todoTitle, description, date, priority, status, projectFolder);
+
+    return createTodoElement(todoTitle, description, date, priority, status, projectFolder);
+}
+
+export {openProjectsModal, closeProjectsModal, openTodosModal, closeTodosModal, populateProjectsView, removeFromProjectView, populateTodosView};
 
 
 
