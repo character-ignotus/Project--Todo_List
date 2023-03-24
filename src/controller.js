@@ -48,4 +48,8 @@ function loger() {
     console.log(projects);
 };
 
-export {createProject, createTodos, delProject, delTodo, loger};
+function getProjects() {
+    return projects;
+}
+
+export {createProject, createTodos, delProject, delTodo, loger, getProjects};
