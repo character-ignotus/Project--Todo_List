@@ -17,6 +17,8 @@ function createTodos(title, description, date, priorityChecker, isChecked, selec
     projects.forEach((project) => {
         if (project.projectName === selectedProject) {
             project.todos.push(todosCreator(title, description, date, priorityChecker, isChecked));
+        } else {
+            console.log(`Project doesn't exist!`);
         }
     })
 };
@@ -40,10 +42,10 @@ function delTodo(todoTitle) {
             }
         }
     }
-}
+};
 
 function loger() {
     console.log(projects);
-}
+};
 
 export {createProject, createTodos, delProject, delTodo, loger};
