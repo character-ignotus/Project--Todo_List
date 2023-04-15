@@ -98,6 +98,11 @@ function updateMediator(projectName) {
     mediator = projectName;
 }
 
+function removeTodo(e) {
+    delTodo(e.target.parentElement.firstChild.textContent);
+    e.target.parentElement.remove();
+}
+
 function populateCurrentProject() {
     let projectFolder = document.querySelector('#project-folders').value;
     if(projectFolder == mediator) {
@@ -122,20 +127,27 @@ function renderTodos() {
                 const todoDate = document.createElement('div');
                 const todoPriority = document.createElement('div');
                 const todoStatus = document.createElement('div');
+                const delTodoBtn = document.createElement('div');
 
                 todoTitle.textContent = todo.title;
                 todoDescription.textContent = todo.description;
                 todoDate.textContent = todo.date;
                 todoPriority.textContent = todo.priority;
                 todoStatus.textContent = todo.checked;
+                delTodoBtn.textContent = 'X';
 
                 todoCard.classList.add('todo');
+
+                delTodoBtn.addEventListener('click', (e) => {
+                    removeTodo(e);
+                });
 
                 todoCard.appendChild(todoTitle);
                 todoCard.appendChild(todoDescription);
                 todoCard.appendChild(todoDate);
                 todoCard.appendChild(todoPriority);
                 todoCard.appendChild(todoStatus);
+                todoCard.appendChild(delTodoBtn);
             
                 document.querySelector('#todos-view').appendChild(todoCard);
             });
@@ -157,20 +169,27 @@ function createTodoElement(title, description, date, priority, status) {
     const todoDate = document.createElement('div');
     const todoPriority = document.createElement('div');
     const todoStatus = document.createElement('div');
+    const delTodoBtn = document.createElement('div');
 
     todoTitle.textContent = `${title}`;
     todoDescription.textContent = `${description}`;
     todoDate.textContent = `${date}`;
     todoPriority.textContent = `${priority}`;
     todoStatus.textContent = `${status}`;
+    delTodoBtn.textContent = 'X';
 
     todo.classList.add('todo');
+
+    delTodoBtn.addEventListener('click', (e) => {
+        removeTodo(e);
+    });
 
     todo.appendChild(todoTitle);
     todo.appendChild(todoDescription);
     todo.appendChild(todoDate);
     todo.appendChild(todoPriority);
     todo.appendChild(todoStatus);
+    todo.appendChild(delTodoBtn);
 
     return todo;
 };
