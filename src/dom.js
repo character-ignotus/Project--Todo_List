@@ -25,6 +25,7 @@ function defaultProject() {
     defaultPrj.addEventListener('click', () => {
         updateMediator('Default');
         console.log(mediator);
+        changeThroughProjects();
     });
 }
 
@@ -63,10 +64,13 @@ function createProjectElement(project) {
     projecOpentBtn.addEventListener('click', (e) => {
         updateMediator(e.target.textContent);
         console.log(mediator);
+        changeThroughProjects();
     })
 
     projecCloseBtn.addEventListener('click', (e) => {
         removeFromProjectView(e);
+        updateMediator('Default');
+        changeThroughProjects();
     });
 
     projectCard.classList.add('project');
@@ -97,15 +101,47 @@ function updateMediator(projectName) {
 function populateCurrentProject() {
     let projectFolder = document.querySelector('#project-folders').value;
     if(projectFolder == mediator) {
-        return todosView();
+        return addTodoToView();
     } else {
-        todosView();
+        addTodoToView();
     }
 };
 
-function changeThroughProjectViews() {
-
+function changeThroughProjects() {
+    unpopulateTodosView();
+    renderTodos();
 };
+
+function renderTodos() {
+    getProjects().forEach((project) => {
+        if (project.projectName === mediator) {
+            project.todos.forEach((todo) => {
+                const todoCard = document.createElement('div');
+                const todoTitle = document.createElement('div')
+                const todoDescription = document.createElement('div');
+                const todoDate = document.createElement('div');
+                const todoPriority = document.createElement('div');
+                const todoStatus = document.createElement('div');
+
+                todoTitle.textContent = todo.title;
+                todoDescription.textContent = todo.description;
+                todoDate.textContent = todo.date;
+                todoPriority.textContent = todo.priority;
+                todoStatus.textContent = todo.checked;
+
+                todoCard.classList.add('todo');
+
+                todoCard.appendChild(todoTitle);
+                todoCard.appendChild(todoDescription);
+                todoCard.appendChild(todoDate);
+                todoCard.appendChild(todoPriority);
+                todoCard.appendChild(todoStatus);
+            
+                document.querySelector('#todos-view').appendChild(todoCard);
+            });
+        };
+    })
+}
 
 function unpopulateTodosView() {
     const todosView = document.getElementById('todos-view');
@@ -139,7 +175,7 @@ function createTodoElement(title, description, date, priority, status) {
     return todo;
 };
 
-function todosView() {
+function addTodoToView() {
     let todoTitle = document.querySelector('#todo-title').value;
     let description = document.querySelector('#description').value;
     let date = document.querySelector('#date').value;
