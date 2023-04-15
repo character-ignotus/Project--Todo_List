@@ -2,7 +2,7 @@ import { createProject, createTodos, delProject, delTodo, loger, getProjects } f
 const projectModal = document.querySelector('.project-modal');
 const todosModal = document.querySelector('.todos-modal');
 
-let mediator;
+let mediator = 'Default';
 
 function openProjectsModal() {
     projectModal.showModal();
@@ -19,6 +19,14 @@ function openTodosModal() {
 function closeTodosModal() {
     todosModal.close();
 };
+
+function defaultProject() {
+    const defaultPrj = document.getElementById('default');
+    defaultPrj.addEventListener('click', () => {
+        updateMediator('Default');
+        console.log(mediator);
+    });
+}
 
 // Additional Functionality
 function addToProjectsList(projectName) {
@@ -86,7 +94,14 @@ function updateMediator(projectName) {
     mediator = projectName;
 }
 
-
+function populateCurrentProject() {
+    let projectFolder = document.querySelector('#project-folders').value;
+    if(projectFolder == mediator) {
+        return todosView();
+    } else {
+        todosView();
+    }
+}
 
 function createTodoElement(title, description, date, priority, status) {
     const todo = document.createElement('div');
@@ -112,15 +127,6 @@ function createTodoElement(title, description, date, priority, status) {
 
     return todo;
 };
-
-function populateCurrentProject() {
-    let projectFolder = document.querySelector('#project-folders').value;
-    if(projectFolder == mediator) {
-        return todosView();
-    } else {
-        todosView();
-    }
-}
 
 function todosView() {
     let todoTitle = document.querySelector('#todo-title').value;
@@ -153,7 +159,7 @@ function checkForDuplicateProject(projectName) {
     return duplicate;
 };
 
-export {openProjectsModal, closeProjectsModal, openTodosModal, closeTodosModal, populateProjectsView, removeFromProjectView, populateCurrentProject};
+export {openProjectsModal, closeProjectsModal, openTodosModal, closeTodosModal, populateProjectsView, removeFromProjectView, populateCurrentProject, defaultProject};
 
 
 

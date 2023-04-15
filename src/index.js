@@ -1,6 +1,6 @@
 import './styles/style.css'
 import { createProject, createTodos, delProject, delTodo, loger } from "./controller";
-import { openProjectsModal, closeProjectsModal, openTodosModal, closeTodosModal, populateProjectsView, populateCurrentProject } from "./dom"
+import { openProjectsModal, closeProjectsModal, openTodosModal, closeTodosModal, populateProjectsView, populateCurrentProject, defaultProject } from "./dom"
 
 // Opening & closing modal for projects //
 document.querySelector('#add-project').addEventListener('click', openProjectsModal);
@@ -22,6 +22,7 @@ document.querySelector('.submit-todo').addEventListener('click', () => {
     window.loger();
 });
 
+defaultProject();
 window.loger = loger;
 window.createProject = createProject;
 window.createTodos = createTodos;
