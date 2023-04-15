@@ -2,6 +2,8 @@ import { createProject, createTodos, delProject, delTodo, loger, getProjects } f
 const projectModal = document.querySelector('.project-modal');
 const todosModal = document.querySelector('.todos-modal');
 
+let mediator;
+
 function openProjectsModal() {
     projectModal.showModal();
 };
@@ -50,6 +52,11 @@ function createProjectElement(project) {
     projecOpentBtn.textContent = `${project.projectName}`;
     projecCloseBtn.textContent = `X`;
 
+    projecOpentBtn.addEventListener('click', (e) => {
+        updateMediator(e.target.textContent);
+        console.log(mediator);
+    })
+
     projecCloseBtn.addEventListener('click', (e) => {
         removeFromProjectView(e);
     });
@@ -69,12 +76,17 @@ function populateProjectsView() {
     if (checkForDuplicateProject(projectName)) {
         return
     } else {
-        console.log('dont match');
         createProject(projectName);
         const projects = getProjects();
         return createProjectElement(projects[projects.length - 1]);
     }
 };
+
+function updateMediator(projectName) {
+    mediator = projectName;
+}
+
+
 
 function createTodoElement(title, description, date, priority, status) {
     const todo = document.createElement('div');
@@ -99,9 +111,18 @@ function createTodoElement(title, description, date, priority, status) {
     todo.appendChild(todoStatus);
 
     return todo;
+};
+
+function populateCurrentProject() {
+    let projectFolder = document.querySelector('#project-folders').value;
+    if(projectFolder == mediator) {
+        return todosView();
+    } else {
+        todosView();
+    }
 }
 
-function populateTodosView() {
+function todosView() {
     let todoTitle = document.querySelector('#todo-title').value;
     let description = document.querySelector('#description').value;
     let date = document.querySelector('#date').value;
@@ -132,7 +153,7 @@ function checkForDuplicateProject(projectName) {
     return duplicate;
 };
 
-export {openProjectsModal, closeProjectsModal, openTodosModal, closeTodosModal, populateProjectsView, removeFromProjectView, populateTodosView};
+export {openProjectsModal, closeProjectsModal, openTodosModal, closeTodosModal, populateProjectsView, removeFromProjectView, populateCurrentProject};
 
 
 
