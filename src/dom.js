@@ -21,7 +21,7 @@ function closeTodosModal() {
 // Additional Functionality
 function addToProjectsList(projectName) {
     const projectOption = document.createElement('option');
-    projectOption.setAttribute(`id`, `${projectName}`)
+    projectOption.setAttribute(`id`, `${projectName}`);
     projectOption.textContent = `${projectName}`;
     projectOption.value = `${projectName}`;
     document.getElementById('project-folders').appendChild(projectOption);
@@ -66,9 +66,14 @@ function createProjectElement(project) {
 
 function populateProjectsView() {
     let projectName = document.querySelector('#project-name').value;
-    createProject(projectName);
-    const projects = getProjects();
-    return createProjectElement(projects[projects.length - 1]);
+    if (checkForDuplicateProject(projectName)) {
+        return
+    } else {
+        console.log('dont match');
+        createProject(projectName);
+        const projects = getProjects();
+        return createProjectElement(projects[projects.length - 1]);
+    }
 };
 
 function createTodoElement(title, description, date, priority, status) {
@@ -115,6 +120,17 @@ function populateTodosView() {
 
     return createTodoElement(todoTitle, description, date, priority, status, projectFolder);
 }
+
+
+function checkForDuplicateProject(projectName) {
+    let duplicate;    
+    getProjects().forEach((project) => {
+        if(project.projectName == projectName) {
+            duplicate = true;
+        }
+    })
+    return duplicate;
+};
 
 export {openProjectsModal, closeProjectsModal, openTodosModal, closeTodosModal, populateProjectsView, removeFromProjectView, populateTodosView};
 
