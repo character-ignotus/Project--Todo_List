@@ -33,3 +33,15 @@ body {
     flex: 1;
     background-color: orange;
 }
+
+.todo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    width: 90%;
+    background-color: grey;
+    margin: 10px;
+    color: black;
+    font-size: 1.35rem;
+}

@@ -12,7 +12,7 @@ function createProject(projectName) {
 function createTodos(title, description, date, priorityChecker, isChecked, selectedProject) {
     if(!selectedProject) {
         selectedProject = "Default";
-    }
+    };
     
     projects.forEach((project) => {
         if (project.projectName === selectedProject) {
