@@ -101,6 +101,17 @@ function populateCurrentProject() {
     } else {
         todosView();
     }
+};
+
+function changeThroughProjectViews() {
+
+};
+
+function unpopulateTodosView() {
+    const todosView = document.getElementById('todos-view');
+    while (todosView.firstChild) {
+        todosView.removeChild(todosView.firstChild);
+    }
 }
 
 function createTodoElement(title, description, date, priority, status) {
@@ -159,7 +170,7 @@ function checkForDuplicateProject(projectName) {
     return duplicate;
 };
 
-export {openProjectsModal, closeProjectsModal, openTodosModal, closeTodosModal, populateProjectsView, removeFromProjectView, populateCurrentProject, defaultProject};
+export {openProjectsModal, closeProjectsModal, openTodosModal, closeTodosModal, populateProjectsView, removeFromProjectView, populateCurrentProject, unpopulateTodosView, defaultProject};
 
 
 
