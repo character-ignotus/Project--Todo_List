@@ -105,6 +105,10 @@ function removeTodo(e) {
 
 function populateCurrentProject() {
     let projectFolder = document.querySelector('#project-folders').value;
+    let todoTitle = document.querySelector('#todo-title').value;
+    if (checkForDuplicateTodo(todoTitle)) {
+        return
+    }
     if(projectFolder == mediator) {
         return addTodoToView();
     } else {
@@ -222,6 +226,22 @@ function checkForDuplicateProject(projectName) {
             duplicate = true;
         }
     })
+    return duplicate;
+};
+
+function checkForDuplicateTodo(todoTitle) {
+    let duplicate;
+    const projects = getProjects();    
+
+    for (let i=0; i < projects.length; i++) {
+        for (let j=0; j < projects[i].todos.length; j++) {
+            if (projects[i].todos[j].title === todoTitle) {
+                duplicate = true;
+                console.log('A todo with this title already exists!');
+            }
+        }
+    }
+
     return duplicate;
 };
 
