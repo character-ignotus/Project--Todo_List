@@ -1,4 +1,4 @@
-import { createProject, createTodos, delProject, delTodo, loger, getProjects } from "./controller";
+import { createProject, createTodos, delProject, delTodo, loger, getProjects, editTodo } from "./controller";
 const projectModal = document.querySelector('.project-modal');
 const todosModal = document.querySelector('.todos-modal');
 
@@ -125,34 +125,7 @@ function renderTodos() {
     getProjects().forEach((project) => {
         if (project.projectName === mediator) {
             project.todos.forEach((todo) => {
-                const todoCard = document.createElement('div');
-                const todoTitle = document.createElement('div')
-                const todoDescription = document.createElement('div');
-                const todoDate = document.createElement('div');
-                const todoPriority = document.createElement('div');
-                const todoStatus = document.createElement('div');
-                const delTodoBtn = document.createElement('div');
-
-                todoTitle.textContent = todo.title;
-                todoDescription.textContent = todo.description;
-                todoDate.textContent = todo.date;
-                todoPriority.textContent = todo.priority;
-                todoStatus.textContent = todo.checked;
-                delTodoBtn.textContent = 'X';
-
-                todoCard.classList.add('todo');
-
-                delTodoBtn.addEventListener('click', (e) => {
-                    removeTodo(e);
-                });
-
-                todoCard.appendChild(todoTitle);
-                todoCard.appendChild(todoDescription);
-                todoCard.appendChild(todoDate);
-                todoCard.appendChild(todoPriority);
-                todoCard.appendChild(todoStatus);
-                todoCard.appendChild(delTodoBtn);
-            
+                const todoCard = createTodoElement(todo.title, todo.description, todo.date, todo.priority, todo.checked)
                 document.querySelector('#todos-view').appendChild(todoCard);
             });
         };
@@ -173,26 +146,145 @@ function createTodoElement(title, description, date, priority, status) {
     const todoDate = document.createElement('div');
     const todoPriority = document.createElement('div');
     const todoStatus = document.createElement('div');
+    const openEditModal = document.createElement('button');
     const delTodoBtn = document.createElement('div');
+
+    // Modal for editing Todo //
+    const editTodoModal = document.createElement('dialog');
+
+    const form = document.createElement('form');
+    form.setAttribute('action', 'get');
+    form.setAttribute('method', 'dialog');
+
+    const closeEditModal = document.createElement('button');
+    closeEditModal.textContent = 'X';
+    form.appendChild(closeEditModal);
+
+    const titleDiv = document.createElement('div');
+    const titleLabel = document.createElement('label');
+    titleLabel.textContent = 'Title';
+    titleLabel.setAttribute('for', 'edit-todo-title');
+    const titleInput = document.createElement('input');
+    titleInput.setAttribute('type', 'text');
+    titleInput.setAttribute('name', 'title');
+    titleInput.setAttribute('id', 'edit-todo-title');
+
+    const descriptionDiv = document.createElement('div');
+    const descriptionLabel = document.createElement('label');
+    descriptionLabel.textContent = 'Description';
+    descriptionLabel.setAttribute('for', 'edit-description');
+    const descriptionInput = document.createElement('input');
+    descriptionInput.setAttribute('type', 'text');
+    descriptionInput.setAttribute('name', 'description');
+    descriptionInput.setAttribute('id', 'edit-description');
+
+    const dateDiv = document.createElement('div');
+    const dateLabel = document.createElement('label');
+    dateLabel.textContent = 'Date';
+    dateLabel.setAttribute('for', 'edit-date');
+    const dateInput = document.createElement('input');
+    dateInput.setAttribute('type', 'date');
+    dateInput.setAttribute('name', 'date');
+    dateInput.setAttribute('id', 'edit-date');
+
+    const priorityDiv = document.createElement('div');
+    const priorityLabel = document.createElement('label');
+    priorityLabel.textContent = 'Priority';
+    priorityLabel.setAttribute('for', 'edit-priority');
+    const prioritySelector = document.createElement('select');
+    prioritySelector.setAttribute('name', 'priority');
+    prioritySelector.setAttribute('id', 'edit-priority');
+    const optionOne = document.createElement('option');
+    optionOne.textContent = 'Low';
+    optionOne.setAttribute('value', '1');
+    const optionTwo = document.createElement('option');
+    optionTwo.textContent = 'High';
+    optionTwo.setAttribute('value', '2');
+    prioritySelector.appendChild(optionOne);
+    prioritySelector.appendChild(optionTwo);
+
+    const statusDiv = document.createElement('div');
+    const statusLabel = document.createElement('label');
+    statusLabel.textContent = 'Status';
+    statusLabel.setAttribute('for', 'edit-status');
+    const statusSelector = document.createElement('select');
+    statusSelector.setAttribute('name', 'status');
+    statusSelector.setAttribute('id', 'edit-status');
+    const statusOne = document.createElement('option');
+    statusOne.textContent = 'true';
+    statusOne.setAttribute('value', 'true');
+    const statusTwo = document.createElement('option');
+    statusTwo.textContent = 'false';
+    statusTwo.setAttribute('value', 'false');
+    statusSelector.appendChild(statusOne);
+    statusSelector.appendChild(statusTwo);
+
+    titleDiv.appendChild(titleLabel);
+    titleDiv.appendChild(titleInput);
+    form.appendChild(titleDiv);
+
+    descriptionDiv.appendChild(descriptionLabel);
+    descriptionDiv.appendChild(descriptionInput);
+    form.appendChild(descriptionDiv);
+
+    dateDiv.appendChild(dateLabel);
+    dateDiv.appendChild(dateInput);
+    form.appendChild(dateDiv);
+
+    priorityDiv.appendChild(priorityLabel);
+    priorityDiv.appendChild(prioritySelector);
+    form.appendChild(priorityDiv);
+
+    statusDiv.appendChild(statusLabel);
+    statusDiv.appendChild(statusSelector);
+    form.appendChild(statusDiv);
+
+    const editBtn = document.createElement('button');
+    editBtn.textContent = 'EDIT';
+    editBtn.setAttribute('type', 'submit');
+    form.appendChild(editBtn);
+
+    editTodoModal.appendChild(form);
+    // Modal for editing Todo //
 
     todoTitle.textContent = `${title}`;
     todoDescription.textContent = `${description}`;
     todoDate.textContent = `${date}`;
     todoPriority.textContent = `${priority}`;
     todoStatus.textContent = `${status}`;
+    openEditModal.textContent = 'EDIT';
     delTodoBtn.textContent = 'X';
 
     todo.classList.add('todo');
+
+    editBtn.addEventListener('click', (e) => {
+        editeSelectedTodo(e);
+    });
+
+    openEditModal.addEventListener('click', () => {
+        titleInput.value = `${title}`;
+        descriptionInput.value = `${description}`;
+        dateInput.value = `${date}`;
+        prioritySelector.value = `${priority}`;
+        statusSelector.value = `${status}`;
+        editTodoModal.showModal();
+    });
+
+    closeEditModal.addEventListener('click', () => {
+        editTodoModal.close();
+    });
 
     delTodoBtn.addEventListener('click', (e) => {
         removeTodo(e);
     });
 
+    todo.appendChild(editTodoModal);
     todo.appendChild(todoTitle);
     todo.appendChild(todoDescription);
     todo.appendChild(todoDate);
     todo.appendChild(todoPriority);
     todo.appendChild(todoStatus);
+    todo.appendChild(openEditModal);
     todo.appendChild(delTodoBtn);
 
     return todo;
@@ -215,9 +307,25 @@ function addTodoToView() {
 
     createTodos(todoTitle, description, date, priority, status, projectFolder);
 
-    return createTodoElement(todoTitle, description, date, priority, status, projectFolder);
+    return createTodoElement(todoTitle, description, date, priority, status);
 }
 
+function editeSelectedTodo(e) {
+    let currentTodoTitle = e.target.parentElement.parentElement.parentElement.firstElementChild.nextElementSibling.textContent;
+    let todoTitle = e.target.parentElement.firstElementChild.nextElementSibling.firstElementChild.nextElementSibling.value;
+    let description = e.target.parentElement.firstElementChild.nextElementSibling.nextElementSibling.firstElementChild.nextElementSibling.value;
+    let date = e.target.parentElement.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.nextElementSibling.value;
+    let priority = e.target.parentElement.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.nextElementSibling.value;
+    let status = e.target.parentElement.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.nextElementSibling.value;
+
+    e.target.parentElement.parentElement.parentElement.firstElementChild.nextElementSibling.textContent = `${todoTitle}`;
+    e.target.parentElement.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.textContent = `${description}`;
+    e.target.parentElement.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.textContent = `${date}`;
+    e.target.parentElement.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.textContent = `${priority}`;
+    e.target.parentElement.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.textContent = `${status}`;
+
+    editTodo(currentTodoTitle, todoTitle, description, date, priority, status);
+}
 
 function checkForDuplicateProject(projectName) {
     let duplicate;    
