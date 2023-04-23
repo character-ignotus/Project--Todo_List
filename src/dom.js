@@ -99,7 +99,7 @@ function updateMediator(projectName) {
 }
 
 function removeTodo(e) {
-    delTodo(e.target.parentElement.firstChild.textContent);
+    delTodo(e.target.parentElement.firstChild.nextElementSibling.textContent);
     e.target.parentElement.remove();
 }
 
