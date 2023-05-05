@@ -39,7 +39,7 @@ function addToProjectsList(projectName) {
 }
 
 function removeFromProjectsList(e) {
-    let projectOption = document.getElementById(`${e.target.previousElementSibling.textContent}`);
+    let projectOption = document.getElementById(`${e.target.previousElementSibling.previousElementSibling.textContent}`);
     document.getElementById('project-folders').removeChild(projectOption);
 }
 // Additional Functionality
@@ -47,25 +47,59 @@ function removeFromProjectsList(e) {
 function removeFromProjectView(e) {
     removeFromProjectsList(e);
 
-    delProject(e.target.previousElementSibling.textContent);
-    document.querySelector('#projects').removeChild(e.target.parentElement);
+    delProject(e.target.previousElementSibling.previousElementSibling.textContent);
+    document.querySelector('#projects').removeChild(e.target.parentElement.parentElement);
 
     loger();
 };
 
+function expandProject(e) {
+    const currentProject = e.target.parentElement.firstChild.textContent;
+    const expnadedView = document.createElement('div');
+    expnadedView.classList.add('expanded-view');
+
+    getProjects().forEach((project) => {
+        if (project.projectName === currentProject) {
+            project.todos.forEach(todo => {
+                const todoExpansion = document.createElement('div');
+                const todoTitle = document.createElement('p');
+                const todoDate = document.createElement('p');
+                todoTitle.textContent = `${todo.title}`;
+                todoDate.textContent = `${todo.date}`;
+                todoExpansion.appendChild(todoTitle);
+                todoExpansion.appendChild(todoDate);
+                expnadedView.appendChild(todoExpansion);
+            });
+        };
+    })
+
+    return expnadedView;
+};
+
 function createProjectElement(project) {
     const projectCard = document.createElement('div');
+    const buttonSection = document.createElement('div');
     const projecOpentBtn = document.createElement('button');
+    const projectExpnadBtn = document.createElement('button');
     const projecCloseBtn = document.createElement('button');
 
     projecOpentBtn.textContent = `${project.projectName}`;
+    projectExpnadBtn.textContent = '▼';
     projecCloseBtn.textContent = `X`;
 
     projecOpentBtn.addEventListener('click', (e) => {
         updateMediator(e.target.textContent);
         console.log(mediator);
         changeThroughProjects();
-    })
+    });
+
+    projectExpnadBtn.addEventListener('click', (e) => {
+        if(e.target.parentElement.parentElement.lastChild.classList.contains('expanded-view')) {
+            e.target.parentElement.parentElement.removeChild(e.target.parentElement.parentElement.lastChild);
+        } else {
+            projectCard.appendChild(expandProject(e));
+        };
+    });
 
     projecCloseBtn.addEventListener('click', (e) => {
         removeFromProjectView(e);
@@ -75,8 +109,11 @@ function createProjectElement(project) {
 
     projectCard.classList.add('project');
 
-    projectCard.appendChild(projecOpentBtn);
-    projectCard.appendChild(projecCloseBtn);
+    buttonSection.appendChild(projecOpentBtn);
+    buttonSection.appendChild(projectExpnadBtn);
+    buttonSection.appendChild(projecCloseBtn);
+
+    projectCard.appendChild(buttonSection);
 
     addToProjectsList(project.projectName)
 
