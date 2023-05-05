@@ -22,7 +22,11 @@ function checkValues(e) {
     };
 }
 
-document.querySelector('.submit-project').addEventListener('click', () => {
+document.querySelector('.submit-project').addEventListener('click', (e) => {
+    const input = e.target.parentElement.firstElementChild.nextElementSibling.firstElementChild.querySelector('input');
+
+    if(input.value == '') return
+
     document.querySelector('#projects').appendChild(populateProjectsView());
     window.loger();
 });
