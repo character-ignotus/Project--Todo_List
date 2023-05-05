@@ -261,12 +261,12 @@ function createTodoElement(title, description, date, priority, status) {
         editeSelectedTodo(e);
     });
 
-    openEditModal.addEventListener('click', () => {
-        titleInput.value = `${title}`;
-        descriptionInput.value = `${description}`;
-        dateInput.value = `${date}`;
-        prioritySelector.value = `${priority}`;
-        statusSelector.value = `${status}`;
+    openEditModal.addEventListener('click', (e) => {
+        titleInput.value = `${e.target.parentElement.firstElementChild.nextElementSibling.textContent}`;
+        descriptionInput.value = `${e.target.parentElement.firstElementChild.nextElementSibling.nextElementSibling.textContent}`;
+        dateInput.value = `${e.target.parentElement.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.textContent}`;
+        prioritySelector.value = `${e.target.parentElement.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.textContent}`;
+        statusSelector.value = `${e.target.parentElement.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.textContent}`;
         editTodoModal.showModal();
     });
 
