@@ -55,8 +55,8 @@ function removeFromProjectView(e) {
 
 function expandProject(e) {
     const currentProject = e.target.parentElement.firstChild.textContent;
-    const expnadedView = document.createElement('div');
-    expnadedView.classList.add('expanded-view');
+    const expandedView = document.createElement('div');
+    expandedView.classList.add('expanded-view');
 
     getProjects().forEach((project) => {
         if (project.projectName === currentProject) {
@@ -68,13 +68,24 @@ function expandProject(e) {
                 todoDate.textContent = `${todo.date}`;
                 todoExpansion.appendChild(todoTitle);
                 todoExpansion.appendChild(todoDate);
-                expnadedView.appendChild(todoExpansion);
+                expandedView.appendChild(todoExpansion);
             });
         };
     })
 
-    return expnadedView;
+    return expandedView;
 };
+
+//New//
+function expandedTodo(e) {
+    const expandedView = document.createElement('div');
+    const currentDescription = document.createElement('p');
+    currentDescription.textContent = `${e.target.parentElement.firstChild.nextElementSibling.nextElementSibling.textContent}`;
+    expandedView.classList.add('expanded-view');
+    expandedView.appendChild(currentDescription);
+    return expandedView;
+};
+//New//
 
 function createProjectElement(project) {
     const projectCard = document.createElement('div');
@@ -137,7 +148,7 @@ function updateMediator(projectName) {
 
 function removeTodo(e) {
     delTodo(e.target.parentElement.firstChild.nextElementSibling.textContent);
-    e.target.parentElement.remove();
+    e.target.parentElement.parentElement.remove();
 }
 
 function populateCurrentProject() {
@@ -184,7 +195,14 @@ function createTodoElement(title, description, date, priority, status) {
     const todoPriority = document.createElement('div');
     const todoStatus = document.createElement('div');
     const openEditModal = document.createElement('button');
+    //New//
+    const expandTodo = document.createElement('button');
+    //New//
     const delTodoBtn = document.createElement('div');
+
+    //New//
+    const mainSection = document.createElement('div');
+    //New//
 
     // Modal for editing Todo //
     const editTodoModal = document.createElement('dialog');
@@ -290,6 +308,7 @@ function createTodoElement(title, description, date, priority, status) {
     todoPriority.textContent = `${priority}`;
     todoStatus.textContent = `${status}`;
     openEditModal.textContent = 'EDIT';
+    expandTodo.textContent = '▼';
     delTodoBtn.textContent = 'X';
 
     todo.classList.add('todo');
@@ -311,18 +330,30 @@ function createTodoElement(title, description, date, priority, status) {
         editTodoModal.close();
     });
 
+    //New//
+    expandTodo.addEventListener('click', (e) => {
+        if(e.target.parentElement.parentElement.lastChild.classList.contains('expanded-view')) {
+            e.target.parentElement.parentElement.removeChild(e.target.parentElement.parentElement.lastChild);
+        } else {
+            todo.appendChild(expandedTodo(e));
+        };
+    });
+    //New//
+
     delTodoBtn.addEventListener('click', (e) => {
         removeTodo(e);
     });
 
-    todo.appendChild(editTodoModal);
-    todo.appendChild(todoTitle);
-    todo.appendChild(todoDescription);
-    todo.appendChild(todoDate);
-    todo.appendChild(todoPriority);
-    todo.appendChild(todoStatus);
-    todo.appendChild(openEditModal);
-    todo.appendChild(delTodoBtn);
+    mainSection.appendChild(editTodoModal);
+    mainSection.appendChild(todoTitle);
+    mainSection.appendChild(todoDescription);
+    mainSection.appendChild(todoDate);
+    mainSection.appendChild(todoPriority);
+    mainSection.appendChild(todoStatus);
+    mainSection.appendChild(openEditModal);
+    mainSection.appendChild(expandTodo);
+    mainSection.appendChild(delTodoBtn);
+    todo.appendChild(mainSection);
 
     return todo;
 };
