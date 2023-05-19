@@ -1,6 +1,9 @@
 import './styles/style.css'
 import { createProject, createTodos, delProject, delTodo, loger } from "./controller";
-import { openProjectsModal, closeProjectsModal, openTodosModal, closeTodosModal, populateProjectsView, populateCurrentProject, unpopulateTodosView, defaultProject } from "./dom"
+// import { openProjectsModal, closeProjectsModal, openTodosModal, closeTodosModal, populateProjectsView, populateCurrentProject, unpopulateTodosView, defaultProject } from "./dom"
+import { openProjectsModal, closeProjectsModal, openTodosModal, closeTodosModal } from "./modals";
+import { defaultProject, populateProjectsView } from "./projects-view";
+import { populateCurrentProject, unpopulateTodosView } from "./todos-view";
 
 // Opening & closing modal for projects //
 document.querySelector('#add-project').addEventListener('click', openProjectsModal);

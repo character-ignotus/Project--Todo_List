@@ -1,82 +1,6 @@
-import { createProject, createTodos, delProject, delTodo, loger, getProjects, editTodo } from "./controller";
-const projectModal = document.querySelector('.project-modal');
-const todosModal = document.querySelector('.todos-modal');
+import { createTodos, delTodo, getProjects, editTodo } from "./controller";
+import { mediator } from "./modals";
 
-let mediator = 'Default';
-
-function openProjectsModal() {
-    projectModal.showModal();
-};
-
-function closeProjectsModal() {
-    projectModal.close();
-};
-
-function openTodosModal() {
-    todosModal.showModal();
-};
-
-function closeTodosModal() {
-    todosModal.close();
-};
-
-function defaultProject() {
-    const defaultPrj = document.getElementById('default');
-    defaultPrj.addEventListener('click', () => {
-        updateMediator('Default');
-        console.log(mediator);
-        changeThroughProjects();
-    });
-}
-
-// Additional Functionality
-function addToProjectsList(projectName) {
-    const projectOption = document.createElement('option');
-    projectOption.setAttribute(`id`, `${projectName}`);
-    projectOption.textContent = `${projectName}`;
-    projectOption.value = `${projectName}`;
-    document.getElementById('project-folders').appendChild(projectOption);
-}
-
-function removeFromProjectsList(e) {
-    let projectOption = document.getElementById(`${e.target.previousElementSibling.previousElementSibling.textContent}`);
-    document.getElementById('project-folders').removeChild(projectOption);
-}
-// Additional Functionality
-
-function removeFromProjectView(e) {
-    removeFromProjectsList(e);
-
-    delProject(e.target.previousElementSibling.previousElementSibling.textContent);
-    document.querySelector('#projects').removeChild(e.target.parentElement.parentElement);
-
-    loger();
-};
-
-function expandProject(e) {
-    const currentProject = e.target.parentElement.firstChild.textContent;
-    const expandedView = document.createElement('div');
-    expandedView.classList.add('expanded-view');
-
-    getProjects().forEach((project) => {
-        if (project.projectName === currentProject) {
-            project.todos.forEach(todo => {
-                const todoExpansion = document.createElement('div');
-                const todoTitle = document.createElement('p');
-                const todoDate = document.createElement('p');
-                todoTitle.textContent = `${todo.title}`;
-                todoDate.textContent = `${todo.date}`;
-                todoExpansion.appendChild(todoTitle);
-                todoExpansion.appendChild(todoDate);
-                expandedView.appendChild(todoExpansion);
-            });
-        };
-    })
-
-    return expandedView;
-};
-
-//New//
 function expandedTodo(e) {
     const expandedView = document.createElement('div');
     const currentDescription = document.createElement('p');
@@ -85,66 +9,6 @@ function expandedTodo(e) {
     expandedView.appendChild(currentDescription);
     return expandedView;
 };
-//New//
-
-function createProjectElement(project) {
-    const projectCard = document.createElement('div');
-    const buttonSection = document.createElement('div');
-    const projecOpentBtn = document.createElement('button');
-    const projectExpnadBtn = document.createElement('button');
-    const projecCloseBtn = document.createElement('button');
-
-    projecOpentBtn.textContent = `${project.projectName}`;
-    projectExpnadBtn.textContent = '▼';
-    projecCloseBtn.textContent = `X`;
-
-    projecOpentBtn.addEventListener('click', (e) => {
-        updateMediator(e.target.textContent);
-        console.log(mediator);
-        changeThroughProjects();
-    });
-
-    projectExpnadBtn.addEventListener('click', (e) => {
-        if(e.target.parentElement.parentElement.lastChild.classList.contains('expanded-view')) {
-            e.target.parentElement.parentElement.removeChild(e.target.parentElement.parentElement.lastChild);
-        } else {
-            projectCard.appendChild(expandProject(e));
-        };
-    });
-
-    projecCloseBtn.addEventListener('click', (e) => {
-        removeFromProjectView(e);
-        updateMediator('Default');
-        changeThroughProjects();
-    });
-
-    projectCard.classList.add('project');
-
-    buttonSection.appendChild(projecOpentBtn);
-    buttonSection.appendChild(projectExpnadBtn);
-    buttonSection.appendChild(projecCloseBtn);
-
-    projectCard.appendChild(buttonSection);
-
-    addToProjectsList(project.projectName)
-
-    return projectCard;
-};
-
-function populateProjectsView() {
-    let projectName = document.querySelector('#project-name').value;
-    if (checkForDuplicateProject(projectName)) {
-        return
-    } else {
-        createProject(projectName);
-        const projects = getProjects();
-        return createProjectElement(projects[projects.length - 1]);
-    }
-};
-
-function updateMediator(projectName) {
-    mediator = projectName;
-}
 
 function removeTodo(e) {
     delTodo(e.target.parentElement.firstChild.nextElementSibling.textContent);
@@ -395,16 +259,6 @@ function editeSelectedTodo(e) {
     editTodo(currentTodoTitle, todoTitle, description, date, priority, status);
 }
 
-function checkForDuplicateProject(projectName) {
-    let duplicate;    
-    getProjects().forEach((project) => {
-        if(project.projectName == projectName) {
-            duplicate = true;
-        }
-    })
-    return duplicate;
-};
-
 function checkForDuplicateTodo(todoTitle) {
     let duplicate;
     const projects = getProjects();    
@@ -421,7 +275,4 @@ function checkForDuplicateTodo(todoTitle) {
     return duplicate;
 };
 
-export {openProjectsModal, closeProjectsModal, openTodosModal, closeTodosModal, populateProjectsView, removeFromProjectView, populateCurrentProject, unpopulateTodosView, defaultProject};
-
-
-
+export {populateCurrentProject, unpopulateTodosView, changeThroughProjects};
