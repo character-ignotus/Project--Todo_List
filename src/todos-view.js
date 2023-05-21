@@ -1,5 +1,6 @@
 import { createTodos, delTodo, getProjects, editTodo } from "./controller";
 import { mediator } from "./modals";
+import { formatDistance } from 'date-fns';
 
 function expandedTodo(e) {
     const expandedView = document.createElement('div');
@@ -168,7 +169,9 @@ function createTodoElement(title, description, date, priority, status) {
 
     todoTitle.textContent = `${title}`;
     todoDescription.textContent = `${description}`;
-    todoDate.textContent = `${date}`;
+
+    todoDate.textContent = `${formatDistance(new Date(date), new Date(), { addSuffix: true })}`;
+
     todoPriority.textContent = `${priority}`;
     todoStatus.textContent = `${status}`;
     openEditModal.textContent = 'EDIT';
@@ -225,7 +228,7 @@ function createTodoElement(title, description, date, priority, status) {
 function addTodoToView() {
     let todoTitle = document.querySelector('#todo-title').value;
     let description = document.querySelector('#description').value;
-    let date = document.querySelector('#date').value;
+    let date = document.querySelector('#date').value.replace(/-/g, ',');
     let priority = document.querySelector('#priority').value;
     let status = document.querySelector('#status').value;
     let projectFolder = document.querySelector('#project-folders').value;
@@ -252,7 +255,7 @@ function editeSelectedTodo(e) {
 
     e.target.parentElement.parentElement.parentElement.firstElementChild.nextElementSibling.textContent = `${todoTitle}`;
     e.target.parentElement.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.textContent = `${description}`;
-    e.target.parentElement.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.textContent = `${date}`;
+    e.target.parentElement.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.textContent = `${formatDistance(new Date(date), new Date(), { addSuffix: true })}`;
     e.target.parentElement.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.textContent = `${priority}`;
     e.target.parentElement.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.textContent = `${status}`;
 
