@@ -187,7 +187,7 @@ function createTodoElement(title, description, date, priority, status) {
     openEditModal.addEventListener('click', (e) => {
         titleInput.value = `${e.target.parentElement.firstElementChild.nextElementSibling.textContent}`;
         descriptionInput.value = `${e.target.parentElement.firstElementChild.nextElementSibling.nextElementSibling.textContent}`;
-        dateInput.value = `${e.target.parentElement.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.textContent}`;
+        dateInput.value = `${getDate(e).replace(/,/g, '-')}`;
         prioritySelector.value = `${e.target.parentElement.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.textContent}`;
         statusSelector.value = `${e.target.parentElement.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.textContent}`;
         editTodoModal.showModal();
@@ -276,6 +276,21 @@ function checkForDuplicateTodo(todoTitle) {
     }
 
     return duplicate;
+};
+
+function getDate(e) {
+    let projects = getProjects();
+    let date;
+
+    for (let i=0; i < projects.length; i++) {
+        for (let j=0; j < projects[i].todos.length; j++) {
+            if (projects[i].todos[j].title === e.target.parentElement.firstElementChild.nextElementSibling.textContent) {
+                date = projects[i].todos[j].date;
+            }
+        }
+    };
+    
+    return date
 };
 
 export {populateCurrentProject, unpopulateTodosView, changeThroughProjects};
